@@ -1,90 +1,67 @@
-/* Helper Functions */
-var checkZeros = function(matrix) {
-  var matrixHeight = matrix.length;
-  var matrixWidth = matrix[0].length;
-  var rowsToZeroify = {}; // use hashtables to remove duplicates
-  var colsToZeroify = {};
+<script>
+function zero(matrix) {
+	let columns = [];
+	let rows = [];
+	let zeroMatrix = [];
+	
+	for (let i=0; i< matrix.length; i++) {
+		for (let j=0; j< matrix[i].length; j++) {
+			if (matrix[i][j] === 0) {
+				rows.push(i);
+				columns.push(j);
+			}
+		}
+	}
+	
+	for (let i=0; i< matrix.length; i++) {
+		zeroMatrix[i] = [];
+		for (let j=0; j< matrix[i].length; j++) {
+			if (rows.includes(i) || columns.includes(j)) {
+				zeroMatrix[i][j] = 0;
+			}
+			else {
+				zeroMatrix[i][j] = matrix[i][j];
+			}
+		}
+	}
+	
+	return zeroMatrix;
+}
 
-  for (var i = 0; i < matrixHeight; i++) {
-    for (var j = 0; j < matrixWidth; j++) {
-      if (matrix[i][j] === 0) {
-        rowsToZeroify[i] = true;
-        colsToZeroify[j] = true;
-      }
-    }
-  }
-  return {
-    rowsToZeroify: rowsToZeroify,
-    colsToZeroify: colsToZeroify
-  };
-};
+function areEqual(arr1, arr2) {
+ 	if (arr1.length !== arr2.length) {
+ 		return false;
+ 	}
+ 	
+ 	for (let i=0; i<arr1.length; i++) {
+ 		if (arr1[i].length !== arr2[i].length) {
+ 			return false;
+ 		}
+ 		for (let j=0; j<arr1.length; j++) {
+ 			if (arr1[i][j] !== arr2[i][j]) {
+ 				return false;
+ 			}
+ 		}
+ 	}
+ 	
+ 	return true;
+}
 
-var printMatrix = function(matrix) {
-  for (var i = 0; i < matrix.length; i++) {
-    console.log(matrix[i]);
-  }
-};
+function printMatrix(matrix) {
+	console.log('---')
+	for (let i=0; i<matrix.length; i++) {
+		console.log(matrix[i].join(''));
+	}
+	console.log('---')
+}
 
-var zeroifyCol = function(matrix, col) {
-  for (var i = 0; i < matrix.length; i++) {
-    matrix[i][col] = 0;
-  }
-};
+console.log(areEqual(
+					zero([[1,0,1,1],[2,2,2,2],[3,3,3,3],[4,4,4,4]]), 
+					[[0,0,0,0],[2,0,2,2],[3,0,3,3],[4,0,4,4]])
+			);
+console.log(areEqual(
+					zero([[8,0,1,0],[1,2,2,6],[9,7,3,3],[9,1,4,9]]), 
+					[[0,0,0,0],[1,0,2,0],[9,0,3,0],[9,0,4,0]])
+			);
 
-var zeroifyCols = function(matrix, zeroScan) {
-  for (var col in zeroScan.colsToZeroify) {
-    zeroifyCol(matrix, Number(col));  
-  }
-};
-
-var zeroifyRow = function(matrix, row) {
-  for (var i = 0; i < matrix[row].length; i++) {
-    matrix[row][i] = 0;
-  }
-};
-
-var zeroifyRows = function(matrix, zeroScan) {
-  for (var row in zeroScan.rowsToZeroify) {
-    zeroifyRow(matrix, Number(row));  
-  }
-};
-
-/* Main Function */
-var zeroMatrix = function(matrix) {
-
-  if(matrix.length === 0) { return; }
-
-  var zeroScan = checkZeros(matrix);
-
-  zeroifyCols(matrix, zeroScan);
-  zeroifyRows(matrix, zeroScan);
-
-};
-
-// Testing
-var testMatrix = [
-  [1, 1, 1, 1],
-  [1, 1, 1, 1],
-  [1, 0, 1, 1],
-  [1, 1, 1, 1],
-  [1, 1, 1, 1],
-  [1, 1, 1, 1]
-];
-
-console.log('before');
-printMatrix(testMatrix);
-
-zeroMatrix(testMatrix);
-
-console.log('after');
-printMatrix(testMatrix);
-
-// function should mutate the matrix to the following:
-// [
-//   [1, 0, 1, 1],
-//   [1, 0, 1, 1],
-//   [0, 0, 0, 0],
-//   [1, 0, 1, 1],
-//   [1, 0, 1, 1],
-//   [1, 0, 1, 1]
-// ]
+</script>
